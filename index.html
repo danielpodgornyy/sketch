@@ -5,20 +5,34 @@
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <title>Sketch</title>
         <link rel = "stylesheet" href = "./style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Slackside+One&display=swap" rel="stylesheet">
     </head>
     <body>
         <div class = "title">
             <h1>SKETCH</h1>
         </div>
         <div class = "side-tab">
-            <div class = "color-picker">
-                <input id = "picker" type = "color" value = "#333333">
+            <div class = "container" id = "color-picker-container">
+                <input id = "color-picker" type = "color" value = "#333333">
             </div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <div class = "container" id = "fill-container">
+                <button>FILL</button>
+            </div>
+            <div class = "container" id = "shade-container">
+                <button>LIGHTEN</button>
+                <button>DARKEN</button>
+            </div>
+            <div class = "container" id = "eraser-container">
+                <button>ERASER</button>
+            </div>
+            <div class = "container" id = "clear-container">
+                <button>CLEAR</button>
+            </div>
+            <div class = "container" id = "size-slider-container">
+                <button>SLIDER</button>
+            </div>
         </div>
         <script src = "./tempName.js"></script>
     </body>

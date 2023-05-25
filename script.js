@@ -1,3 +1,10 @@
+let mouseDown;
+document.body.onmousedown = () => (mouseDown = true)
+document.body.onmouseup = () => (mouseDown = false)
+
+buildGrid();
+draw();
+
 function buildGrid()
 {
     let body = document.querySelector('body');
@@ -25,17 +32,6 @@ function buildGrid()
     body.appendChild(sideTab);
     */
 }
-
-let mouseDown;
-document.body.onmousedown = () => (mouseDown = true)
-document.body.onmouseup = () => (mouseDown = false)
-
-buildGrid();
-draw();
-
-let board = document.querySelector('.board');
-let tile = document.querySelectorAll('.tile');
-
 
 function draw()
 {
