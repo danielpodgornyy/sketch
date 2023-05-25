@@ -54,7 +54,7 @@ function buildSite()
     let sliderDesc = document.createElement('h1');
 
     gridButton.id = 'show-grid';
-    gridButton.textContent = '&#9638';
+    gridButton.textContent = '\u25A6';
 
     colorPickerContainer.classList.add('container');
     colorPickerContainer.id = 'color-picker-container';
@@ -114,21 +114,82 @@ function draw()
 {
     let board = document.querySelector('.board');
     let tiles = document.querySelectorAll('.tile');
+    let colorSelector = document.querySelector('#color-picker');
+    let selectedColor = colorSelector.value;
+
+    changeGrid();
+    erase();
+    clear();
+
     
     tiles.forEach((tile) => {
-        tile.addEventListener('mouseover', changeColor);
-        tile.addEventListener('mousedown', changeColor);
+        tile.addEventListener('mouseover', paint);
+        tile.addEventListener('mousedown', paint);
         tile.addEventListener('dragstart', (e) => {
             e.preventDefault();
         });
     })
-
 }
 
-function changeColor(e)
+function paint(e)
 {
     if (e.type === 'mouseover' && !mouseDown) return;
 
-    e.currentTarget.style.cssText = 'background-color: black;'
+    let colorSelector = document.querySelector('#color-picker');
+    let selectedColor = colorSelector.value;
 
+    e.currentTarget.style.backgroundColor = selectedColor;
+}
+
+function changeGrid()
+{
+    let gridButton = document.querySelector('#show-grid');
+    let tiles = document.querySelectorAll('.tile');
+    let borderOn = false;
+
+    gridButton.addEventListener('click', () =>
+    {
+        if (borderOn == false)
+        {
+            tiles.forEach((tile) => {
+                tile.style.border = '1px solid';
+                borderOn = true;
+            });
+        }
+        else
+        {
+            tiles.forEach((tile) =>
+            {
+                tile.style.border = '';
+                borderOn = false;
+            })
+        }
+    });
+
+
+}
+
+function erase()
+{
+    let eraseButton = document.querySelector('#eraser')
+    let colorSelector = document.querySelector('#color-picker');
+    
+    eraseButton.addEventListener('click', () =>
+    {
+        colorSelector.value = '#FFFFFF';
+    });
+}
+
+function clear()
+{
+    let clearButton = document.querySelector('#clear');
+    let tiles = document.querySelectorAll('.tile');
+
+    clearButton.addEventListener('click', () =>
+    {
+        tiles.forEach((tile) => 
+        {
+            tile.style.backgroundColor = 'white';
+        });
+    })
 }

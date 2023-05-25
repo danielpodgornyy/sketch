@@ -21,22 +21,23 @@ body
     display: grid;
     grid-template-columns: repeat(32, 1fr);
     grid-template-rows: repeat(32,1fr);
-    height: 700px;
-    width: 700px;
+    height: 2000px;
+    width: 2000px;
     border: solid black 5px;
     border-radius: 5px;
 }
 .board .tile
 {
     background-color: white;
-    border: solid black 1px;
 }
 
 /*    Title    */
 
 .title
 {
-    margin: auto;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
     height: 100px;
     width: 500px;
     background-color: lightgrey;
@@ -53,6 +54,9 @@ body
 
 .side-tab
 {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
     background-color: lightgrey;
     border: solid 5px;
     margin-left: -5px;
