@@ -2,16 +2,16 @@ let mouseDown;
 document.body.onmousedown = () => (mouseDown = true)
 document.body.onmouseup = () => (mouseDown = false)
 
-buildSite();
+buildBoard();
 draw();
 
-function buildSite()
+function buildBoard()
 {
-    //build grid
     let body = document.querySelector('body');
     let board = document.createElement('div');
+    let title = document.querySelector('.title');
     board.classList.add('board');
-    body.appendChild(board);
+    body.insertBefore(board, title);
 
     for (let i = 0; i < 1024; i++)
     {
@@ -19,116 +19,25 @@ function buildSite()
         tile.classList.add('tile');
         board.appendChild(tile);
     }
-    
-    //build title
-    let title = document.createElement('div');
-    let titleText = document.createElement('h1');
-
-    body.appendChild(title);
-    title.appendChild(titleText);
-
-    title.classList.add('title');
-    titleText.textContent = 'SKETCH';
-
-    //build tab
-    let sideTab = document.createElement('div');
-
-    sideTab.classList.add('side-tab');
-
-    body.appendChild(sideTab);
-
-    let gridButton = document.createElement('button');
-    let colorPickerContainer = document.createElement('div');
-    let colorPicker = document.createElement('input');
-    let fillContainer = document.createElement('div');
-    let fill = document.createElement('button');
-    let shadeContainer = document.createElement('div');
-    let lighten = document.createElement('button');
-    let darken = document.createElement('button');
-    let eraserContainer = document.createElement('div');
-    let eraser = document.createElement('button');
-    let clearContainer = document.createElement('div');
-    let clear = document.createElement('button');
-    let sliderContainer = document.createElement('div');
-    let slider = document.createElement('input');
-    let sliderDesc = document.createElement('h1');
-
-    gridButton.id = 'show-grid';
-    gridButton.textContent = '\u25A6';
-
-    colorPickerContainer.classList.add('container');
-    colorPickerContainer.id = 'color-picker-container';
-    colorPicker.id = 'color-picker';
-    colorPicker.type = 'color';
-    colorPicker.value = '#333333'
-
-    fillContainer.classList.add('container');
-    fillContainer.id = 'fill-container';
-    fill.id = 'fill';
-    fill.textContent = 'FILL';
-
-    shadeContainer.classList.add('container');
-    shadeContainer.id = 'shade-container';
-    lighten.id = 'lighten';
-    lighten.textContent = 'LIGHTEN';
-    darken.id = 'darken';
-    darken.textContent = 'DARKEN';
-
-    eraserContainer.classList.add('container');
-    eraserContainer.id = 'eraser-container';
-    eraser.id = 'eraser';
-    eraser.textContent = 'ERASER';
-
-    clearContainer.classList.add('container');
-    clearContainer.id = 'clear-container';
-    clear.id = 'clear';
-    clear.textContent = 'CLEAR';
-
-    sliderContainer.classList.add('container');
-    sliderContainer.id = 'slider-container';
-    slider.id = 'slider';
-    slider.type = 'range';
-    slider.value = '16';
-    sliderDesc.id = 'slider-desc';
-    sliderDesc.textContent = '16 x 16';
-
-    sideTab.appendChild(gridButton);
-    sideTab.appendChild(colorPickerContainer);
-    colorPickerContainer.appendChild(colorPicker);
-    sideTab.appendChild(fillContainer);
-    fillContainer.appendChild(fill);
-    sideTab.appendChild(shadeContainer);
-    shadeContainer.appendChild(lighten);
-    shadeContainer.appendChild(darken);
-    sideTab.appendChild(eraserContainer);
-    eraserContainer.appendChild(eraser);
-    sideTab.appendChild(clearContainer);
-    clearContainer.appendChild(clear);
-    sideTab.appendChild(sliderContainer);
-    sliderContainer.appendChild(slider);
-    sliderContainer.appendChild(sliderDesc);
-
 }
 
 function draw()
 {
-    let board = document.querySelector('.board');
-    let tiles = document.querySelectorAll('.tile');
-    let colorSelector = document.querySelector('#color-picker');
-    let selectedColor = colorSelector.value;
-
+    changeScale();
     changeGrid();
     erase();
     clear();
-
+    rainbow();
+    let tiles = document.querySelectorAll('.tile');
     
     tiles.forEach((tile) => {
-        tile.addEventListener('mouseover', paint);
-        tile.addEventListener('mousedown', paint);
+
         tile.addEventListener('dragstart', (e) => {
             e.preventDefault();
         });
-    })
+        tile.addEventListener('mouseover', paint);
+        tile.addEventListener('mousedown',paint);
+    });
 }
 
 function paint(e)
@@ -144,11 +53,13 @@ function paint(e)
 function changeGrid()
 {
     let gridButton = document.querySelector('#show-grid');
-    let tiles = document.querySelectorAll('.tile');
     let borderOn = false;
 
     gridButton.addEventListener('click', () =>
     {
+        let tiles = document.querySelectorAll('.tile');
+
+        console.log('hi')
         if (borderOn == false)
         {
             tiles.forEach((tile) => {
@@ -191,5 +102,109 @@ function clear()
         {
             tile.style.backgroundColor = 'white';
         });
+    });
+}
+
+function rainbow()
+{
+    let tiles = document.querySelectorAll('.tile');
+    let rainbowButton = document.querySelector('#rainbow');
+    let rainbowOn = false;
+
+    rainbowButton.addEventListener('click', () =>
+    {
+        if (rainbowOn == false)
+        {
+
+            tiles.forEach((tile) => {
+                tile.addEventListener('dragstart', (e) => {
+                    e.preventDefault();
+                });
+                tile.addEventListener('mouseover', paintRainbow);
+                tile.addEventListener('mousedown',paintRainbow);
+            });
+            rainbowOn = true;
+        }else
+        {
+            tiles.forEach((tile) => {
+                tile.removeEventListener('dragstart', (e) => {
+                    e.preventDefault();
+                });
+                tile.removeEventListener('mouseover', paintRainbow);
+                tile.removeEventListener('mousedown',paintRainbow);
+            });
+            rainbowOn = false;
+        }
     })
+
+    return;
+}
+
+function paintRainbow(e)
+{
+    if (e.type === 'mouseover' && !mouseDown) return;
+
+    let colorSelector = document.querySelector('#color-picker');
+    colorSelector.value = getRandColor();
+    let selectedColor = colorSelector.value;
+
+    e.currentTarget.style.backgroundColor = selectedColor;
+}
+
+function getRandColor()
+{
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+
+    for (let i = 0; i < 6; i++)
+    {
+        color += letters[Math.floor(Math.random() * 16)]
+    }
+
+    return color;
+}
+
+function changeScale()
+{
+    let slider = document.querySelector('#slider');
+    let sliderDesc = document.querySelector('#slider-desc');
+
+    slider.min = '1';
+
+    slider.onmousemove =  () =>
+    {
+        sliderDesc.textContent = `${slider.value} x ${slider.value}`;
+    }
+
+    slider.onchange = () =>
+    {
+        reloadSite(slider.value);
+    }
+}
+
+function reloadSite(inputDimensions)
+{
+    let body = document.querySelector('body');
+    let title = document.querySelector('.title');
+    let board = document.querySelector('.board');
+
+
+    body.removeChild(board);
+
+    let newBoard = document.createElement('div');
+    newBoard.classList.add('board');
+    newBoard.style.gridTemplateColumns = `repeat(${inputDimensions}, 1fr)`;
+    newBoard.style.gridTemplateRows = `repeat(${inputDimensions}, 1fr)`;
+
+    body.insertBefore(newBoard, title);
+
+
+    for (let i = 0; i < (inputDimensions * inputDimensions); i++)
+    {
+        let tile = document.createElement('div');
+        tile.classList.add('tile');
+        newBoard.appendChild(tile);
+    }
+
+    draw();
 }
