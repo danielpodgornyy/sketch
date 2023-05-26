@@ -187,7 +187,8 @@ function Lighten()
 
             e.currentTarget.style.backgroundColor = 'black';
             e.currentTarget.style.color = 'white';
-        }else
+        }
+        else
         {
             tiles.forEach((tile) => {
                 tile.removeEventListener('dragstart', (e) => {
