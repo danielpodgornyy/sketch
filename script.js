@@ -59,25 +59,30 @@ function ChangeGrid()
     let gridButton = document.querySelector('#show-grid');
     let borderOn = false;
 
-    gridButton.addEventListener('click', () =>
+    gridButton.addEventListener('click', (e) =>
     {
         let tiles = document.querySelectorAll('.tile');
 
-        console.log('hi')
         if (borderOn == false)
         {
             tiles.forEach((tile) => {
                 tile.style.border = '1px solid';
-                borderOn = true;
             });
+            borderOn = true;
+
+            e.currentTarget.style.backgroundColor = 'black';
+            e.currentTarget.style.color = 'white';
         }
         else
         {
             tiles.forEach((tile) =>
             {
                 tile.style.border = '';
-                borderOn = false;
             })
+            borderOn = false;
+
+            e.currentTarget.style.backgroundColor = 'white';
+            e.currentTarget.style.color = 'black';
         }
     });
 
@@ -89,9 +94,20 @@ function Erase()
     let eraseButton = document.querySelector('#eraser')
     let colorSelector = document.querySelector('#color-picker');
     
-    eraseButton.addEventListener('click', () =>
+    eraseButton.addEventListener('click', (e) =>
     {
+        let button = e.currentTarget;
+
         colorSelector.value = '#FFFFFF';
+
+        button.style.backgroundColor = 'black';
+        button.style.color = 'white';
+
+        setTimeout(() =>
+        {
+            button.style.backgroundColor = 'white';
+            button.style.color = 'black';
+        },100)
     });
 }
 
@@ -100,12 +116,23 @@ function Clear()
     let clearButton = document.querySelector('#clear');
     let tiles = document.querySelectorAll('.tile');
 
-    clearButton.addEventListener('click', () =>
+    clearButton.addEventListener('click', (e) =>
     {
         tiles.forEach((tile) => 
         {
             tile.style.backgroundColor = 'white';
         });
+
+        let button = e.currentTarget;
+        
+        button.style.backgroundColor = 'black';
+        button.style.color = 'white';
+
+        setTimeout(() =>
+        {
+            button.style.backgroundColor = 'white';
+            button.style.color = 'black';
+        },100)
     });
 }
 
@@ -115,7 +142,7 @@ function Rainbow()
     let rainbowButton = document.querySelector('#rainbow');
     let rainbowOn = false;
 
-    rainbowButton.addEventListener('click', () =>
+    rainbowButton.addEventListener('click', (e) =>
     {
         if (rainbowOn == false)
         {
@@ -124,10 +151,13 @@ function Rainbow()
                 tile.addEventListener('dragstart', (e) => {
                     e.preventDefault();
                 });
-                tile.addEventListener('mouseover', paintRainbow);
-                tile.addEventListener('mousedown',paintRainbow);
+                tile.addEventListener('mouseover', PaintRainbow);
+                tile.addEventListener('mousedown',PaintRainbow);
             });
             rainbowOn = true;
+
+            e.currentTarget.style.backgroundColor = 'black';
+            e.currentTarget.style.color = 'white';
         }else
         {
             tiles.forEach((tile) => {
@@ -138,6 +168,9 @@ function Rainbow()
                 tile.removeEventListener('mousedown',PaintRainbow);
             });
             rainbowOn = false;
+
+            e.currentTarget.style.backgroundColor = 'white';
+            e.currentTarget.style.color = 'black';
         }
     })
 
@@ -162,7 +195,7 @@ function GetRandColor()
 
     for (let i = 0; i < 6; i++)
     {
-        color += letters[Math.floor(Math.random() * 16)]
+        color += letters[Math.floor(Math.random() * 16)];
     }
 
     return color;
@@ -182,7 +215,7 @@ function ChangeScale()
 
     slider.onchange = () =>
     {
-        reloadSite(slider.value);
+        ReloadSite(slider.value);
     }
 }
 
@@ -219,7 +252,7 @@ function Lighten()
     let lightenButton = document.querySelector('#lighten');
     let lightenOn = false;
 
-    lightenButton.addEventListener('click', () =>
+    lightenButton.addEventListener('click', (e) =>
     {
         if (lightenOn == false)
         {
@@ -230,7 +263,20 @@ function Lighten()
                 tile.addEventListener('mouseover', PaintLight);
                 tile.addEventListener('mousedown',PaintLight);
             });
+
+            tiles.forEach((tile) => {
+
+                tile.removeEventListener('dragstart', (e) => {
+                    e.preventDefault();
+                });
+                tile.removeEventListener('mouseover', Paint);
+                tile.removeEventListener('mousedown',Paint);
+            });
+
             lightenOn = true;
+
+            e.currentTarget.style.backgroundColor = 'black';
+            e.currentTarget.style.color = 'white';
         }else
         {
             tiles.forEach((tile) => {
@@ -239,8 +285,22 @@ function Lighten()
                 });
                 tile.removeEventListener('mouseover', PaintLight);
                 tile.removeEventListener('mousedown',PaintLight);
+
             });
+
+            tiles.forEach((tile) => {
+
+                tile.addEventListener('dragstart', (e) => {
+                    e.preventDefault();
+                });
+                tile.addEventListener('mouseover', Paint);
+                tile.addEventListener('mousedown',Paint);
+            });
+
             lightenOn = false;
+
+            e.currentTarget.style.backgroundColor = 'white';
+            e.currentTarget.style.color = 'black';
         }
     })
 }
@@ -258,7 +318,7 @@ function Darken()
     let darkenButton = document.querySelector('#darken');
     let darkenOn = false;
 
-    darkenButton.addEventListener('click', () =>
+    darkenButton.addEventListener('click', (e) =>
     {
         if (darkenOn == false)
         {
@@ -269,7 +329,20 @@ function Darken()
                 tile.addEventListener('mouseover', PaintDark);
                 tile.addEventListener('mousedown',PaintDark);
             });
+
+            tiles.forEach((tile) => {
+
+                tile.removeEventListener('dragstart', (e) => {
+                    e.preventDefault();
+                });
+                tile.removeEventListener('mouseover', Paint);
+                tile.removeEventListener('mousedown',Paint);
+            });
+
             darkenOn = true;
+
+            e.currentTarget.style.backgroundColor = 'black';
+            e.currentTarget.style.color = 'white';
         }else
         {
             tiles.forEach((tile) => {
@@ -279,7 +352,20 @@ function Darken()
                 tile.removeEventListener('mouseover', PaintDark);
                 tile.removeEventListener('mousedown',PaintDark);
             });
+
+            tiles.forEach((tile) => {
+
+                tile.addEventListener('dragstart', (e) => {
+                    e.preventDefault();
+                });
+                tile.addEventListener('mouseover', Paint);
+                tile.addEventListener('mousedown',Paint);
+            });
+
             darkenOn = false;
+
+            e.currentTarget.style.backgroundColor = 'white';
+            e.currentTarget.style.color = 'black';
         }
     })
 }
